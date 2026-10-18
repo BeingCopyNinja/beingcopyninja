@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hatake Kakashi</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+</head>
+
+<body>
+
+    <div class="cursor"></div>
+
+    <nav>
+        <div class="logo">KAKASHI</div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#live-activity">Live-Activity</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#social">Social</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-card">
+            <img src="Images/profile.jpeg" alt="Profile">
+            <h1>Hatake Kakashi</h1>
+            <p>Casual Gamer • Developer • Music Addict</p>
+            <h3 id="quote">Victory comes from discipline.</h3>
+            <div class="hero-buttons">
+                <a href="https://instagram.com/being.copy.ninja" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>About Me</h2>
+        <div class="card">
+            Casual gamer, tech enthusiast, and music addict. Always exploring new games while building cool web projects and vibing to good music.
+        </div>
+    </section>
+
+    <!-- Spotify & Discord Live Status Section -->
+    <section class="section" id="live-activity">
+        <h2>Live-Activity</h2>
+        <div class="spotify-card">
+            <div class="spotify-icon">
+                <span class="music-wave">🎵</span>
+                <span class="live-dot"></span>
+            </div>
+            <div class="spotify-info">
+                <h3>Currently Vibeing</h3>
+                <p id="spotify-song">Connecting to Spotify...</p>
+            </div>
+        </div>
+
+        <br>
+
+        <!-- Discord Gaming Status Section -->
+        <div class="spotify-card" style="border-color: #5865F2;">
+            <div class="spotify-icon" style="background: rgba(88, 101, 242, 0.1);">
+                <span>🎮</span>
+                <span class="live-dot" style="background-color: #5865F2; box-shadow: 0 0 8px #5865F2;"></span>
+            </div>
+            <div class="spotify-info">
+                <h3 style="color: #5865F2;">Currently Playing</h3>
+                <p id="discord-game">Checking game status...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="games" class="section">
+        <h2>Favorite Games</h2>
+        <div class="cards">
+            <div class="card game-card">
+                <img src="Images/minecraft.jpg" alt="minecraft">
+                <h3>Minecraft</h3>
+                <p>Builder</p>
+            </div>
+            <div class="card game-card">
+                <img src="Images/forza-horizon.jpg" alt="forza-horizon">
+                <h3>Forza Horizon 5</h3>
+                <p>Global Elite</p>
+            </div>
+            <div class="card game-card">
+                <img src="Images/Counter-Strike_2.jpg" alt="CS-2">
+                <h3>CS-2</h3>
+                <p>Casual Player</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery">
+            <img src="Images/pic1.jpeg" alt="picture-1">
+            <img src="Images/pic2.jpeg" alt="picture-2">
+            <img src="Images/pic3.jpeg" alt="picture-3">
+            <img src="Images/pic4.jpeg" alt="picture-4">
+        </div>
+    </section>
+
+    <section class="section" id="social">
+        <h2>Social Links</h2>
+        <div class="socials">
+            <a href="https://instagram.com/being.copy.ninja" target="_blank">Instagram</a>
+            <a href="https://open.spotify.com/user/31qtmxm3ugfizayz4cshgkqyjm6u?si=9vdCKsjERRChSE3TLSDGSA&utm_source=copy-link&pi=EWgKijlQRK2hs" target="_blank">Spotify</a>
+        </div>
+    </section>
+
+    <footer>
+        Made With ❤️ By Kakashi
+    </footer>
+
+    <button class="theme-btn" onclick="toggleTheme()">
+        Theme
+    </button>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
