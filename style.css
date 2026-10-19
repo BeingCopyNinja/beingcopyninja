@@ -102,7 +102,7 @@ nav a:hover {
     border-radius: 15px;
 }
 
-/* --- Spotify Status Card Design --- */
+/* --- Spotify / Live Status Card Design --- */
 .spotify-card {
     background: linear-gradient(135deg, #121212, #181818);
     border: 2px solid #1db954;
@@ -163,6 +163,25 @@ nav a:hover {
     font-size: 16px;
     color: #ffffff;
     font-weight: 500;
+}
+
+/* --- Music Progress Bar Styles --- */
+.music-progress-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.music-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #1db954;
+    border-radius: 10px;
+    transition: width 1s linear;
+    box-shadow: 0 0 8px #1db954;
 }
 
 .cards {
@@ -241,10 +260,10 @@ footer {
     z-index: 1000;
 }
 
-/* Light Mode Styling */
+/* --- LIGHT MODE FIXES --- */
 .light {
     background: #f4f4f4;
-    color: black;
+    color: #111;
 }
 
 .light nav,
@@ -252,18 +271,38 @@ footer {
 .light .spotify-card,
 .light .hero-card,
 .light footer {
-    background: white;
-    color: black;
+    background: #ffffff;
+    color: #111;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-.light .socials a {
-    background: white;
-    color: black;
+/* Nav links visible in light mode */
+.light nav a {
+    color: #111;
 }
 
-.light .spotify-info p {
+.light nav a:hover {
+    color: #ff003c;
+}
+
+.light .section h2 {
+    color: #111;
+}
+
+.light .socials a {
+    background: #ffffff;
+    color: #111;
+}
+
+.light .spotify-info p,
+.light .hero-card p,
+.light .hero-card h3,
+.light .card {
     color: #222222;
+}
+
+.light .music-progress-container {
+    background: rgba(0, 0, 0, 0.1);
 }
 
 /* Custom Cursor */

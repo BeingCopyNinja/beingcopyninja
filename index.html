@@ -46,23 +46,28 @@
         </div>
     </section>
 
-    <!-- Spotify & Discord Live Status Section -->
+   <!-- Spotify & Discord Live Status Section -->
     <section class="section" id="live-activity">
         <h2>Live-Activity</h2>
+        <!-- Music Status Section with Progress Bar -->
         <div class="spotify-card">
             <div class="spotify-icon">
                 <span class="music-wave">🎵</span>
                 <span class="live-dot"></span>
             </div>
-            <div class="spotify-info">
+            <div class="spotify-info" style="width: 100%;">
                 <h3>Currently Vibeing</h3>
-                <p id="spotify-song">Connecting to Spotify...</p>
+                <p id="spotify-song">Connecting to music...</p>
+                <!-- Music Progress Bar -->
+                <div class="music-progress-container">
+                    <div id="music-progress-bar" class="music-progress-bar"></div>
+                </div>
             </div>
         </div>
 
         <br>
 
-        <!-- Discord Gaming Status Section -->
+        <!-- Discord Gaming Status Section with Timestamp -->
         <div class="spotify-card" style="border-color: #5865F2;">
             <div class="spotify-icon" style="background: rgba(88, 101, 242, 0.1);">
                 <span>🎮</span>

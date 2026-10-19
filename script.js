@@ -35,12 +35,22 @@ document.addEventListener("mousemove", (e) => {
 });
 
 
-// --- 4. Spotify, Music Apps & Gaming Status (Lanyard API) ---
+// --- Helper function to format milliseconds into MM:SS ---
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+
+// --- 4. Spotify, Echo Music & Gaming Status with Progress Bar ---
 const DISCORD_USER_ID = "784841461027831818"; // Apni Discord User ID
 
 async function updateDiscordStatus() {
     const songElement = document.getElementById("spotify-song");
     const gameElement = document.getElementById("discord-game");
+    const progressBar = document.getElementById("music-progress-bar");
     
     try {
         const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
@@ -49,46 +59,103 @@ async function updateDiscordStatus() {
         if (data.success) {
             let musicFound = false;
 
-            // 1. Pehle official Spotify check karo
+            // 1. Official Spotify check with Progress Bar & Timestamps
             if (data.data.spotify) {
                 const track = data.data.spotify.song;
                 const artist = data.data.spotify.artist;
+                const timestamps = data.data.spotify.timestamps;
+                
+                let timeString = "";
+                if (timestamps && timestamps.start && timestamps.end) {
+                    const totalDurationMs = timestamps.end - timestamps.start;
+                    let elapsedMs = Date.now() - timestamps.start;
+                    
+                    if (elapsedMs > totalDurationMs) {
+                        elapsedMs = totalDurationMs;
+                    }
+
+                    // Progress percentage calculation
+                    const progressPercent = (elapsedMs / totalDurationMs) * 100;
+                    if (progressBar) {
+                        progressBar.style.width = `${progressPercent}%`;
+                    }
+
+                    const elapsed = formatTime(elapsedMs);
+                    const total = formatTime(totalDurationMs);
+                    timeString = ` <span style="font-size: 13px; color: #aaa;">(${elapsed} / ${total})</span>`;
+                }
+
                 if (songElement) {
-                    songElement.innerHTML = `🎵 <b>${track}</b> by ${artist}`;
+                    songElement.innerHTML = `🎵 <b>${track}</b> by ${artist}${timeString}`;
                 }
                 musicFound = true;
             } 
-            // 2. Agar Spotify nahi hai, toh activities mein dekho (jaise Echo Music ya other players)
+            // 2. Other music apps (Echo Music / Activities check)
             else if (data.data.activities) {
                 const musicActivity = data.data.activities.find(act => 
                     act.name.toLowerCase().includes("music") || 
                     act.name.toLowerCase().includes("echo") || 
-                    act.type === 2 // Type 2 is usually Listening activity in Discord
+                    act.type === 2 
                 );
 
                 if (musicActivity && songElement) {
                     const title = musicActivity.details || musicActivity.name;
                     const details = musicActivity.state ? ` - ${musicActivity.state}` : "";
-                    songElement.innerHTML = `🎵 <b>${title}</b>${details}`;
+                    
+                    let timeString = "";
+                    if (musicActivity.timestamps && musicActivity.timestamps.start) {
+                        const start = musicActivity.timestamps.start;
+                        const end = musicActivity.timestamps.end;
+                        let elapsedMs = Date.now() - start;
+
+                        if (end) {
+                            const totalDurationMs = end - start;
+                            if (elapsedMs > totalDurationMs) {
+                                elapsedMs = totalDurationMs;
+                            }
+                            
+                            const progressPercent = (elapsedMs / totalDurationMs) * 100;
+                            if (progressBar) {
+                                progressBar.style.width = `${progressPercent}%`;
+                            }
+
+                            const elapsed = formatTime(elapsedMs);
+                            const total = formatTime(totalDurationMs);
+                            timeString = ` <span style="font-size: 13px; color: #aaa;">(${elapsed} / ${total})</span>`;
+                        } else {
+                            if (progressBar) progressBar.style.width = `0%`;
+                            const elapsed = formatTime(elapsedMs);
+                            timeString = ` <span style="font-size: 13px; color: #aaa;">(${elapsed} elapsed)</span>`;
+                        }
+                    }
+
+                    songElement.innerHTML = `🎵 <b>${title}</b>${details}${timeString}`;
                     musicFound = true;
                 }
             }
 
-            // Agar koi music nahi chal raha
             if (!musicFound && songElement) {
                 songElement.innerHTML = "💤 Not listening to music";
+                if (progressBar) progressBar.style.width = `0%`;
             }
 
-            // --- Gaming / Activity Status Check ---
+            // --- Gaming Status with Timestamp ---
             if (gameElement) {
                 const activities = data.data.activities;
-                // Type 0 is Playing a game
                 const playingGame = activities.find(act => act.type === 0);
 
                 if (playingGame) {
                     const gameName = playingGame.name;
                     const gameDetails = playingGame.details ? ` (${playingGame.details})` : "";
-                    gameElement.innerHTML = `🎮 <b>${gameName}</b>${gameDetails}`;
+                    
+                    let timeString = "";
+                    if (playingGame.timestamps && playingGame.timestamps.start) {
+                        const elapsedMs = Date.now() - playingGame.timestamps.start;
+                        const elapsed = formatTime(elapsedMs);
+                        timeString = ` <span style="font-size: 13px; color: #aaa;">(${elapsed} elapsed)</span>`;
+                    }
+
+                    gameElement.innerHTML = `🎮 <b>${gameName}</b>${gameDetails}${timeString}`;
                 } else {
                     gameElement.innerHTML = "💤 Not playing any game right now";
                 }
@@ -101,6 +168,6 @@ async function updateDiscordStatus() {
     }
 }
 
-// Run status updater
+// Run status updater every second so progress bar moves smoothly
 updateDiscordStatus();
-setInterval(updateDiscordStatus, 10000); // Har 10 seconds mein update hoga
+setInterval(updateDiscordStatus, 1000);
