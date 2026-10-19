@@ -35,16 +35,21 @@ document.addEventListener("mousemove", (e) => {
 });
 
 
-// --- Helper function to format milliseconds into MM:SS ---
+// --- Helper function to format milliseconds into H:MM:SS or MM:SS ---
 function formatTime(ms) {
     const totalSeconds = Math.floor(ms / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
     return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
 
-// --- 4. Spotify, Echo Music & Gaming Status with Progress Bar ---
+// --- 4. Spotify & Gaming Status Logic ---
 const DISCORD_USER_ID = "784841461027831818"; // Apni Discord User ID
 
 async function updateDiscordStatus() {
@@ -59,7 +64,7 @@ async function updateDiscordStatus() {
         if (data.success) {
             let musicFound = false;
 
-            // 1. Official Spotify check with Progress Bar & Timestamps
+            // 1. Official Spotify check
             if (data.data.spotify) {
                 const track = data.data.spotify.song;
                 const artist = data.data.spotify.artist;
@@ -74,7 +79,6 @@ async function updateDiscordStatus() {
                         elapsedMs = totalDurationMs;
                     }
 
-                    // Progress percentage calculation
                     const progressPercent = (elapsedMs / totalDurationMs) * 100;
                     if (progressBar) {
                         progressBar.style.width = `${progressPercent}%`;
@@ -139,7 +143,7 @@ async function updateDiscordStatus() {
                 if (progressBar) progressBar.style.width = `0%`;
             }
 
-            // --- Gaming Status with Timestamp ---
+            // --- Gaming Status ---
             if (gameElement) {
                 const activities = data.data.activities;
                 const playingGame = activities.find(act => act.type === 0);
@@ -168,6 +172,5 @@ async function updateDiscordStatus() {
     }
 }
 
-// Run status updater every second so progress bar moves smoothly
 updateDiscordStatus();
 setInterval(updateDiscordStatus, 1000);
